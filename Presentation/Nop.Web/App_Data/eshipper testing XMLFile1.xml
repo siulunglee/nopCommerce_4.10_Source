@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<EShipper xmlns="http://www.eshipper.net/XMLSchema" username="Booming1" password="Spring20!9" version="3.0.0">
+  <QuoteRequest serviceId="0" stackable="true" >
+    <From id="123" company="Test Company" address1="650 CIT Drive" city="Livingston" state="ON" country="CA"
+    zip="L4J7Y9" />
+    <To company="Test Company" address1="650 CIT Drive"
+    city="Livingston" state="MA" zip="01603" country="CA" />
+    <!-- COD is optional -->
+    <COD paymentType="Check">
+      <CODReturnAddress codCompany="ABC Towing"
+      codName="Alfred" codAddress1="444 Highway 401"
+      codCity="Toronto" codStateCode="ON" codZip="A1B2C3"
+      codCountry="CA"/>
+    </COD>
+    
+    <!-- If type="Envelope" or type="Courier Pak" or
+type=”Package” package information is required -->
+    
+    <Packages type="Package">
+      <!-- Description is ignore for quote requests -->
+      <!-- If package type="Pallet", type and freightClass
+are required for quote requests -->
+      <Package length="15" width="10" height="12"
+      weight="10" type="Pallet" freightClass="70"
+      nmfcCode="123456" insuranceAmount="0.0"
+      codAmount="0.0" description="desc."/>
+      <Package length="15" width="10" height="10"
+      weight="5" type="Pallet" freightClass="70"
+      insuranceAmount="0.0" codAmount="0.0"
+      description="desc."/>
+    </Packages>
+  

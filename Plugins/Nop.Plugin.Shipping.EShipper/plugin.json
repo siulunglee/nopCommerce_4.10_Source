@@ -1,0 +1,11 @@
+﻿{
+  "Group": "Shipping rate computation",
+  "FriendlyName": "EShipper (EShipper)",
+  "SystemName": "Shipping.EShipper",
+  "Version": "1.00",
+  "SupportedVersions": [ "4.10" ],
+  "Author": "Henry Lee",
+  "DisplayOrder": 1,
+  "FileName": "Nop.Plugin.Shipping.EShipper.dll",
+  "Description": "This plugin offers shipping rates by EShipper"
+}

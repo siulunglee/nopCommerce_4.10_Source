@@ -1,0 +1,103 @@
+﻿<form id="slide-collection-form" method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div id="slider-grid"></div>
+                <script>
+                        $(document).ready(function () {
+                            $("#slider-grid").kendoGrid({
+                                dataSource: {
+                                    type: "json",
+                                    transport: {
+                                        read: {
+                                            url: "@Html.Raw(Url.Action("SlideList", "qBoSlider"))",
+                                            type: "POST",
+                                            dataType: "json"
+                                        },
+                                        destroy: {
+                                            url: "@Html.Raw(Url.Action("SlideDelete", "qBoSlider"))",
+                                            type: "POST",
+                                            dataType: "json"
+                                        }
+                                    },
+                                    schema: {
+                                        data: "Data",
+                                        total: "Total",
+                                        errors: "Errors",
+                                        model: {
+                                            id: "Id"
+                                        }
+                                    },
+                                    error: function (e) {
+                                        display_kendoui_grid_error(e);
+                                        // Cancel the changes
+                                        this.cancelChanges();
+                                    },
+                                    serverPaging: true,
+                                    serverFiltering: true,
+                                    serverSorting: true
+                                },
+                                pageable: {
+                                    refresh: true,
+                                    numeric: false,
+                                    previousNext: false,
+                                    info: false
+                                },
+                                editable: {
+                                    confirmation: false,
+                                    mode: "inline"
+                                },
+                                scrollable: false,
+                                columns: [{
+                                    //TODO display localized values here
+                                    field: "Picture",
+                                    title: "@T("Plugins.Widgets.qBoSlider.Picture")",
+                                    template: "<img src='#=Picture#' />",
+                                }, {
+                                    field: "Hyperlink",
+                                    title: "@T("Plugins.Widgets.qBoSlider.CreateOrEdit.Hyperlink")",
+                                    width: 450
+                                }, {
+                                    field: "DisplayOrder",
+                                    title: "@T("Plugins.Widgets.qBoSlider.CreateOrUpdate.DisplayOrder")",
+                                    width: 100
+                                },
+                                {
+                                    field: "Id",
+                                    title: "@T("Admin.Common.Edit")",
+                                    width: 100,
+                                    template: "<input type='submit' value='@T("Admin.Common.Edit")' onclick=\"javascript:OpenWindow('@Url.Content("~/plugins/qboslider/editslide/")#=Id#?btnId=btnRefresh&formId=slide-collection-form', 1300, 500, true); return false;\" class='k-button' />"
+                                }, {
+                                    command: { name: "destroy", text: "@T("Admin.Common.Delete")" },
+                                    title: "@T("Admin.Common.Delete")",
+                                    width: 100
+                                }]
+                            });
+                        });
+                </script>
+
+            </div>
+            <div class="panel-footer">
+                <button type="button" id="btnAddNewOption" onclick="javascript:OpenWindow('@(Url.Action("CreateSlidePopup", "qBoSlider", new { btnId = "btnRefresh", formId = "slide-collection-form" }))', 1300, 500, true); return false;" class="btn bg-blue">
+                    <i class="fa fa-plus-square"></i>
+                    @T("Plugins.Widgets.qBoSlider.CreateOrUpdate.AddNew")
+                </button>
+
+                <input type="submit" id="btnRefresh" style="display: none" />
+                <script type="text/javascript">
+                        $(document).ready(function () {
+                            $('#btnRefresh').click(function () {
+                                //refresh grid
+                                var grid = $("#slider-grid").data('kendoGrid');
+                                grid.dataSource.read();
+
+                                //return false to don't reload a page
+                                return false;
+                            });
+                        });
+                </script>
+
+            </div>
+        </div>
+    </div>
+</form>

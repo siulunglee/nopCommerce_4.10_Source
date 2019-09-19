@@ -1,0 +1,20 @@
+{
+  "DataProvider": "sqlserver",
+  "DataConnectionString": "Data Source=Boom09\\SQLExpress;Initial Catalog=boom_shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+  //"DataConnectionString": "Data Source=sql5028.site4now.net;Initial Catalog=DB_A4A246_boomshop;Integrated Security=False;Persist Security Info=False;User ID=DB_A4A246_boomshop_admin;Password=Spring20!9",
+  //"DataConnectionString": "Data Source=SQL5046.site4now.net;Initial Catalog=DB_A4A246_stagingshop;User Id=DB_A4A246_stagingshop_admin;Password=Boom123!",
+
+  "RawDataSettings": {}
+}
+
+// Staging
+//  "DataConnectionString": "Data Source=SQL5046.site4now.net;Initial Catalog=DB_A4A246_stagingshop;User Id=DB_A4A246_stagingshop_admin;Password=Spring20!9",
+
+//  Production
+//  "DataConnectionString": "Data Source=sql5028.site4now.net;Initial Catalog=DB_A4A246_boomshop;Integrated Security=False;Persist Security Info=False;User ID=DB_A4A246_boomshop_admin;Password=Spring20!9",
+
+//  Local Computer
+//  "DataConnectionString": "Data Source=Boom09\\SQLExpress;Initial Catalog=boom_shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+
+
+

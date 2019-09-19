@@ -1,0 +1,21 @@
+﻿@model AccountActivationModel
+@{
+    Layout = "_ColumnsOne";
+
+    //title
+    Html.AddTitleParts(T("PageTitle.AccountActivation").Text);
+    //page class
+    Html.AppendPageCssClassParts("html-account-activation-page");
+}
+<div class="page account-activation-page">
+    <div class="page-title">
+        <h1>@T("Account.AccountActivation")</h1>
+    </div>
+    <div class="page-body">
+        <div class="result">
+            @Model.Result
+
+            <BR /><BR /> <a style="text-decoration-line:underline;" href="/login">Please click here to login to your account.</a>
+        </div>
+    </div>
+</div>

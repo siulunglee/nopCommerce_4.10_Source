@@ -1,0 +1,15 @@
+﻿<License>
+  <Id>9281082f-daa8-41a5-927c-f68801224923</Id>
+  <Type>Standard</Type>
+  <ProductFeatures>
+    <Feature name="MultiDomainLicense">False</Feature>
+    <Feature name="Url">boomimaging.ca</Feature>
+    <Feature name="ProductName">Elavon Converge</Feature>
+    <Feature name="PublicKey">MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAETR7i1A+ez6iC2ZFruX1Xf7RFGvWRk5+oZa2Sq1GxsXXXVFi6bopmf4kpPVtbe89IVJ2r+2eVYclEOHZmaMrrcA==</Feature>
+  </ProductFeatures>
+  <Customer>
+    <Name>Henry Lee</Name>
+    <Email>siulunglee@yahoo.com</Email>
+  </Customer>
+  <Signature>MEUCIQCJ+OiLXAjHIWX1k2wiG0tsKOBi9oaZsVtctoQCZY/duwIgG9pHLk+JbiEZC8KMmVT+ER/zZtGY13+1dgyf4yxtXmM=</Signature>
+</License>

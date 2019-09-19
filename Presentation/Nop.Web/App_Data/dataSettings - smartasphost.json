@@ -1,0 +1,7 @@
+﻿{
+  "DataProvider": "sqlserver",
+  "DataConnectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=boom_shop;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False",
+  "RawDataSettings": {}
+}
+
+//Data Source=SQL5035,1433;Initial Catalog=db_a47605_boom_1;User Id=db_a47605_boom_1_admin;Password=Henry123!2017;

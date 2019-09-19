@@ -1,0 +1,374 @@
+﻿@model ProductDetailsModel
+@using Microsoft.AspNetCore.Http.Extensions
+@using Nop.Core.Domain.Seo;
+@inject Nop.Core.IWebHelper webHelper
+@inject SeoSettings seoSettings
+@inject IThemeContext themeContext
+@{
+    Layout = "_ColumnsOne";
+
+    //title
+    Html.AddTitleParts(!string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : Model.Name);
+    //meta
+    Html.AddMetaDescriptionParts(Model.MetaDescription);
+    Html.AddMetaKeywordParts(Model.MetaKeywords);
+    //page class
+    Html.AppendPageCssClassParts("html-product-details-page");
+
+    //canonical URL
+    if (seoSettings.CanonicalUrlsEnabled)
+    {
+        var productUrl = Url.RouteUrl("Product", new { SeName = Model.SeName }, webHelper.CurrentRequestProtocol).ToLowerInvariant();
+        Html.AddCanonicalUrlParts(productUrl, seoSettings.QueryStringInCanonicalUrlsEnabled);
+    }
+
+    //open graph META tags
+    if (seoSettings.OpenGraphMetaTags)
+    {
+        Html.AddHeadCustomParts("<meta property=\"og:type\" content=\"product\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:description\" content=\"" + Html.Encode(Nop.Core.Html.HtmlHelper.StripTags(Model.MetaDescription)) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:url\" content=\"" + webHelper.GetThisPageUrl(true) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"og:site_name\" content=\"" + Html.Encode(Model.CurrentStoreName) + "\" />");
+    }
+
+    //Twitter META tags
+    if (seoSettings.TwitterMetaTags)
+    {
+        Html.AddHeadCustomParts("<meta property=\"twitter:card\" content=\"summary\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:site\" content=\"" + Html.Encode(Model.CurrentStoreName) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:title\" content=\"" + Html.Encode(Model.Name) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:description\" content=\"" + Html.Encode(Nop.Core.Html.HtmlHelper.StripTags(Model.MetaDescription)) + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:image\" content=\"" + Model.DefaultPictureModel.ImageUrl + "\" />");
+        Html.AddHeadCustomParts("<meta property=\"twitter:url\" content=\"" + webHelper.GetThisPageUrl(true) + "\" />");
+    }
+}
+
+
+<!--product breadcrumb-->
+@section Breadcrumb
+    {
+    @await Html.PartialAsync("_ProductBreadcrumb", Model.Breadcrumb)
+}
+@await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsAfterBreadcrumb, additionalData = Model })
+<div class="page product-details-page">
+    <div class="page-body">
+
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsTop, additionalData = Model })
+        <form asp-route="Product" asp-route-sename="@Model.SeName" method="post" id="product-details-form">
+            <div itemscope itemtype="http://schema.org/Product" data-productid="@Model.Id">
+                <div class="product-essential">
+                    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsBeforePictures, additionalData = Model })
+                    <!--product pictures-->
+                    <div class="product-essential-top">
+                        @await Html.PartialAsync("_ProductDetailsPictures", Model)
+                        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsAfterPictures, additionalData = Model })
+                        <div class="overview">
+                            <div class="left-side">
+                                @await Html.PartialAsync("_Discontinued", Model)
+                                <div class="product-name">
+                                    <h1 itemprop="name">
+                                        @Model.Name
+                                    </h1>
+                                </div>
+                                @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsOverviewTop, additionalData = Model })
+                                <!--product reviews-->
+                                @await Html.PartialAsync("_ProductReviewOverview", Model.ProductReviewOverview)
+                                @if (!string.IsNullOrEmpty(Model.ShortDescription))
+                                {
+                                    <div class="short-description">
+                                        @Html.Raw(Model.ShortDescription)
+                                    </div>
+                                }
+
+                                <!--manufacturers-->
+                                @await Html.PartialAsync("_ProductManufacturers", Model.ProductManufacturers)
+                                <!--availability-->
+                                @await Html.PartialAsync("_Availability", Model)
+
+                                <!--SKU, MAN, GTIN, vendor-->
+                                @await Html.PartialAsync("_SKU_Man_GTIN_Ven", Model)
+                                <!--delivery-->
+                                @await Html.PartialAsync("_DeliveryInfo", Model)
+                                <!--sample download-->
+                                @await Html.PartialAsync("_DownloadSample", Model)
+                                <!--attributes-->
+                                @{
+                                    var dataDictAttributes = new ViewDataDictionary(ViewData);
+                                    dataDictAttributes.TemplateInfo.HtmlFieldPrefix = $"attributes_{Model.Id}";
+                                    @await Html.PartialAsync("_ProductAttributes", Model.ProductAttributes, dataDictAttributes)
+
+
+
+
+                                }
+                                <!--gift card-->
+                                @{
+                                    var dataDictGiftCard = new ViewDataDictionary(ViewData);
+                                    dataDictGiftCard.TemplateInfo.HtmlFieldPrefix = $"giftcard_{Model.Id}";
+                                    @await Html.PartialAsync("_GiftCardInfo", Model.GiftCard, dataDictGiftCard)
+                                }
+                                <!--rental info-->
+                                @{
+                                    var dataDictRental = new ViewDataDictionary(ViewData);
+                                    dataDictRental.TemplateInfo.HtmlFieldPrefix = $"rental_{Model.Id}";
+                                    @await Html.PartialAsync("_RentalInfo", Model, dataDictRental)
+                                }
+
+                            </div>
+                            <div class="right-side">
+                                <!--price-->
+                                @{
+                                    var dataDictPrice = new ViewDataDictionary(ViewData);
+                                    dataDictPrice.TemplateInfo.HtmlFieldPrefix = $"price_{Model.Id}";
+                                    @await Html.PartialAsync("_ProductPrice", Model.ProductPrice, dataDictPrice)
+                                    @await Html.PartialAsync("_ProductTierPrices", Model.TierPrices)
+
+                                    var dataDictAddToCart = new ViewDataDictionary(ViewData);
+                                    dataDictAddToCart.TemplateInfo.HtmlFieldPrefix = $"addtocart_{Model.Id}";
+                                    @await Html.PartialAsync("_AddToCart", Model.AddToCart, dataDictAddToCart)
+                                }
+
+
+
+                                @*@{  
+                                    // Added Code for the Inline Canvas Editor
+                                    var tagsList = Model.ProductTags;
+                                    foreach (var tag in tagsList)
+                                    {
+                                        Html.Raw(tag);
+                                        if (tag.Name == "custom-signs" || tag.Name == "customizable")
+                                        {
+                                            <canvas id="canvas" width="400" height="400" style="border: solid 1px;"></canvas>
+                                            <img src="@Model.PictureModels.Last().FullSizeImageUrl" id="my-image" style="display:none;" />
+                                            <select id="font-family"></select>
+                                            <select id="font-size"></select>
+                                            <select id="font-alignment"></select>
+                                            <input type="button" id="btnSave" name="btnSave" value="Save" />
+                                            <input type="reset" class="" value=" Reset " />
+                                        }
+                                    }
+
+                                }
+                                <br /><br />*@
+
+
+                                <!--wishlist, compare, email a friend-->
+                                <div class="overview-buttons">
+                                    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsInsideOverviewButtonsBefore, additionalData = Model })
+                                    @{
+                                        var dataDictAddToWishlist = new ViewDataDictionary(ViewData);
+                                        dataDictAddToWishlist.TemplateInfo.HtmlFieldPrefix = $"addtocart_{Model.Id}";
+                                        @await Html.PartialAsync("_AddToWishlist", Model.AddToCart, dataDictAddToWishlist)
+                                    }
+                                    @*@await Html.PartialAsync("_CompareProductsButton", Model)*@
+                                    @await Html.PartialAsync("_ProductEmailAFriendButton", Model)
+                                    @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsInsideOverviewButtonsAfter, additionalData = Model })
+                                </div>
+
+                                @await Html.PartialAsync("_ShareButton", Model)
+                                @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsOverviewBottom, additionalData = Model })
+                            </div>
+
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.FullDescription))
+                    {
+                        <div class="full-description" itemprop="description">
+                            @Html.Raw(Model.FullDescription)
+                        </div>
+                    }
+                </div>
+                @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsBeforeCollateral, additionalData = Model })
+                <div class="product-collateral">
+                    @await Html.PartialAsync("_ProductSpecifications", Model.ProductSpecifications)
+                    @await Html.PartialAsync("_ProductTags", Model.ProductTags)
+                </div>
+                @await Component.InvokeAsync("RelatedProducts", new { productId = Model.Id })
+                @await Component.InvokeAsync("ProductsAlsoPurchased", new { productId = Model.Id })
+            </div>
+        </form>
+        @await Component.InvokeAsync("Widget", new { widgetZone = PublicWidgetZones.ProductDetailsBottom, additionalData = Model })
+    </div>
+</div>
+@{
+    var themeName = themeContext.WorkingThemeName;
+    Html.AddScriptParts(ResourceLocation.Head, $"~/Themes/{themeName}/Content/js/fabric/fabric.min.js");
+    Html.AddScriptParts(ResourceLocation.Head, $"~/Themes/{themeName}/Content/js/fontfaceobserver/fontfaceobserver.js");
+}
+
+@*@Model.Breadcrumb.CategoryBreadcrumb.ToString();*@
+
+
+@{
+    //Html.Raw("<span>testing 123</span>");
+    //foreach (var name in Model.Breadcrumb.CategoryBreadcrumb)
+    //{
+    //    Html.Raw(name);
+    //}
+
+}
+
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Chivo|Istok+Web|Patua+One|Roboto|Tangerine|Pacifico|VT323|Quicksand|Inconsolata">
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        /*
+            font-family: 'Istok Web', sans-serif;
+            font-family: 'Patua One', cursive;*/
+    }
+</style>
+
+@*<canvas id="canvas" width="500" height="400" style="border: solid 1px;"></canvas>
+    <img src="@Model.PictureModels.Last().FullSizeImageUrl" id="my-image" style="display:none;" />
+    <select id="font-family"></select>
+    <select id="font-size">
+        <option>12</option>
+        <option>14</option>
+        <option>18</option>
+        <option>20</option>
+        <option>24</option>
+    </select>
+    <select id="font-alignment">
+        <option>left</option>
+        <option>right</option>
+        <option>center</option>
+    </select>*@
+
+
+<!-- New Inline Editor Codees -->
+
+<script>
+    var canvas = new fabric.Canvas('canvas');
+    var imgElement = document.getElementById('my-image');
+    var imgUrl = "@Model.PictureModels.Last().FullSizeImageUrl";
+    var imgInstance = new fabric.Image(imgElement, {
+        left: 0,
+        top: 0,
+        angle: 0,
+        //opacity: 0.90
+    });
+
+    // Define an array with all fonts
+    var fonts = ["Chivo", "Roboto", "Pacifico", "VT323", "Quicksand", "Inconsolata"];
+    var fontSize = ["14", "18", "24", "36", "48"];
+    var fontAlignment = ["left", "center", "right", "justify", "justify-left", "justify-center", "justify-right"];
+    var curFontSize = 14, curFontAlign = 'left';
+
+
+    var textbox = new fabric.Textbox('Enter your message here', {
+        left: 50,
+        top: 200,
+        width: 300,
+        fontSize: curFontSize,
+        fontFamily: 'Arial',
+        textAlign: curFontAlign
+    });
+
+    //canvas.add(imgInstance);
+
+    canvas.setBackgroundImage(imgUrl, canvas.renderAll.bind(canvas), {
+      // Needed to position backgroundImage at 0/0
+      originX: 'left',
+      originY: 'top'
+    });
+
+    canvas.add(textbox).setActiveObject(textbox);
+
+
+
+    //var canvas = new fabric.Canvas('canvas');
+
+
+    var selectFontSize = document.getElementById("font-size");
+    fontSize.forEach(function (size) {
+        var option = document.createElement('option');
+        option.innerHTML = size;
+        option.value = size;
+        selectFontSize.appendChild(option);
+    });
+
+    var selectFontAlignment = document.getElementById("font-alignment");
+    fontAlignment.forEach(function (align) {
+        var optionAlign = document.createElement('option');
+        optionAlign.innerHTML = align;
+        optionAlign.value = align;
+        selectFontAlignment.appendChild(optionAlign);
+    });
+
+    //document.getElementById('font-alginment').onchange = function () {
+    //    if (this.value !== 'Left') {
+    //        loadAndUse(this.value);
+    //    } else {
+    //        canvas.getActiveObject().set("fontAlignment", this.value);
+    //        canvas.requestRenderAll();
+    //    }
+    //};
+
+    document.getElementById('font-size').onchange = function () {
+        if (canvas.getActiveObject()) {
+            canvas.getActiveObject().set("fontSize", this.value);
+            canvas.requestRenderAll();
+        }
+        else {
+            canvas.setActiveObject(textbox);
+            canvas.getActiveObject().set("fontSize", this.value);
+            canvas.requestRenderAll();
+        }
+    };
+
+    document.getElementById('font-alignment').onchange = function () {
+        if (canvas.getActiveObject()) {
+            canvas.getActiveObject().set("textAlign", this.value);
+            canvas.requestRenderAll();
+        }
+        else {
+            canvas.setActiveObject(textbox);
+            canvas.getActiveObject().set("textAlign", this.value);
+            canvas.requestRenderAll();
+        }
+    };
+
+    fonts.unshift('Arial');
+    // Populate the fontFamily select
+    var select = document.getElementById("font-family");
+    fonts.forEach(function (font) {
+        var option = document.createElement('option');
+        option.innerHTML = font;
+        option.value = font;
+        select.appendChild(option);
+    });
+
+    // Apply selected font on change
+    document.getElementById('font-family').onchange = function () {
+        if (this.value !== 'Arial') {
+            loadAndUse(this.value);
+        } else {
+            canvas.getActiveObject().set("fontFamily", this.value);
+            canvas.requestRenderAll();
+        }
+    };
+
+    function loadAndUse(font) {
+        var myfont = new FontFaceObserver(font)
+        myfont.load()
+            .then(function () {
+                // when font is loaded, use it.
+                canvas.getActiveObject().set("fontFamily", font).set("fontSize", curFontSize);
+                canvas.requestRenderAll();
+            }).catch(function (e) {
+                console.log(e)
+                alert('font loading failed ' + font);
+            });
+    }
+
+    canvas.renderAndReset();
+
+
+    //var image = canvas.toDataURL("image/png");
+    //image = image.replace('data:image/png;base64,', '');
+
+</script>
+

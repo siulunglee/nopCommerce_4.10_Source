@@ -1,0 +1,654 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Copyright>Copyright © Nop Solutions, Ltd</Copyright>
+    <Company>Nop Solutions, Ltd</Company>
+    <Authors>Nop Solutions, Ltd</Authors>
+    <Version>4.1.0.0</Version>
+    <Description>Nop.Web is also an MVC web application project, a presentation layer for public store and admin area.</Description>
+    <PackageLicenseUrl>http://www.nopcommerce.com/licensev3.aspx</PackageLicenseUrl>
+    <PackageProjectUrl>http://www.nopcommerce.com/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/nopSolutions/nopCommerce</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Nop.Core\Nop.Core.csproj" />
+    <ProjectReference Include="..\..\Libraries\Nop.Data\Nop.Data.csproj" />
+    <ProjectReference Include="..\..\Libraries\Nop.Services\Nop.Services.csproj" />
+    <ProjectReference Include="..\Nop.Web.Framework\Nop.Web.Framework.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- We copy the entire \App_Data directory. But we ignore JSON files and data protection keys  -->
+    <Content Include="App_Data\**" CopyToPublishDirectory="PreserveNewest" Exclude="App_Data\*.json" />
+    <Content Update="App_Data\*.json" CopyToPublishDirectory="Never" />
+    <Content Update="App_Data\DataProtectionKeys\*.xml" CopyToPublishDirectory="Never" />
+
+    <Compile Remove="Plugins\**" />
+
+    <Compile Remove="Themes\BoomShopClean\Views\Catalog\**" />
+
+    <Content Remove="Themes\BoomShopClean\Views\Catalog\**" />
+    <EmbeddedResource Remove="Plugins\**" />
+    <EmbeddedResource Remove="Themes\BoomShopClean\Views\Catalog\**" />
+    <None Remove="Plugins\**" />
+    <None Remove="Themes\BoomShopClean\Views\Catalog\**" />
+
+    <!-- We copy the entire \Plugins and \Themes directories.
+	    But we ignore cshtml and JSON files to avoid "Duplicate 'Content' items were included" error during publishing.
+	    We also can use "CheckForDuplicateItemsContinueOnError" as per https://github.com/dotnet/sdk/blob/master/src/Tasks/Microsoft.NET.Build.Tasks/build/Microsoft.NET.Sdk.DefaultItems.targets -->
+    <Content Include="Plugins\**" CopyToPublishDirectory="PreserveNewest" Exclude="Plugins\**\*.config;Plugins\**\*.cshtml;Plugins\**\*.json" />
+    <Content Include="Themes\**" CopyToPublishDirectory="PreserveNewest" Exclude="Themes\**\*.config;Themes\**\*.cshtml;Themes\**\*.json" />
+
+    <!-- We copy the \Logs directory -->
+    <Content Include="Logs\**" CopyToPublishDirectory="PreserveNewest" />
+    <Content Remove="App_Data\browscap.crawlersonly.xml" />
+    <Content Remove="wwwroot\dist\qtyButton.js" />
+    <None Remove="App_Data\browscap.crawlersonly.xml" />
+    <None Remove="Themes\BoomShopClean\Content\css\owl.carousel.css" />
+    <None Remove="Themes\BoomShopClean\Content\images\boom.png" />
+    <None Remove="Themes\BoomShopClean\Content\images\boom2.jpg" />
+    <None Remove="Themes\BoomShopClean\Content\images\boom3.png" />
+    <None Remove="Themes\BoomShopClean\Content\js\flexmenu.min.js" />
+    <None Remove="Themes\BoomShopClean\Content\js\jquery.zoom.min.js" />
+    <None Remove="Themes\BoomShopClean\Content\js\owl.carousel.min.js" />
+    <None Remove="Themes\BoomShopClean\Content\js\xzoom.min.js" />
+
+    <None Update="Areas\Admin\sitemap.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+    <None Update="Scripts\Products\react\qtyButton.js">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\js\react\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitHub" Version="1.14.2" />
+    <PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Language" Version="2.2.0" />
+
+</ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Plugins\bin\Nop.Plugin.DiscountRules.CustomerRoles.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.ExchangeRate.EcbExchange.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.ExternalAuth.Facebook.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Payments.CheckMoneyOrder.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Payments.Manual.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Payments.PayPalStandard.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Payments.Square.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Payments.Worldpay.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Pickup.PickupInStore.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Shipping.CanadaPost.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Shipping.Fedex.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Shipping.FixedByWeightByTotal.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Shipping.UPS.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Tax.FixedOrByCountryStateZip.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Widgets.GoogleAnalytics.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Widgets.NivoSlider.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Nop.Plugin.Widgets.qBoSlider.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\placeholder.txt">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\RestSharp.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\bin\Square.Connect.dll">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Plugins\Payments.Converge\logo.jpg">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Themes\BoomShopClean\Views\Shared\Head.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <!-- This target execute after "Build" target.
+    We use it to clean up folder with plugins from unnecessary and obsolete libraries. -->
+  <Target Name="NopTarget" AfterTargets="Build">
+    <ItemGroup>
+      <!-- Get plugin description files to get plugin paths -->
+      <PluginsDescription Include="$(MSBuildProjectDirectory)\Plugins\**\plugin.json;" />      
+      <!-- Get paths for all plugins -->
+      <PluginsFolders Include="@(PluginsDescription->'%(relativedir)')" />
+
+      <!-- Get all the libraries from the shadow copy folder to remove them,
+        because depending on the settings, this may not happen when the application is starting,
+        but this can lead to unpredictable results during debugging of the project. -->
+      <ShadowCopiesLibraries Include="$(MSBuildProjectDirectory)\Plugins\bin\*.*" Exclude="$(MSBuildProjectDirectory)\Plugins\bin\placeholder.txt" />
+    </ItemGroup>
+    <PropertyGroup>
+      <PluginsFolders>@(PluginsFolders)</PluginsFolders>
+    </PropertyGroup>
+    <!-- Delete libraries from the shadow copy folder -->
+    <Delete Files="@(ShadowCopiesLibraries)" />
+    <!-- When .NET Core builds a project, it copies all referenced libraries to the output folder.
+      For plugins it creates too many unnecessary files that just take up space.
+      At the moment you can't disable this behavior. That's why we have to manually delete all unnecessary libraries from plugin output directories. -->
+    <MSBuild Projects="$(MSBuildProjectDirectory)\..\..\Build\ClearPluginAssemblies.proj" Properties="PluginPath=$(PluginsFolders)" Targets="NopClear" />
+  </Target>
+  
+  <PropertyGroup> 
+    <!--The common language runtime (CLR) supports two types of garbage collection:
+      workstation garbage collection, which is available on all systems, and server garbage collection,
+      which is available on multiprocessor systems.
+      
+      For single-processor computers, the default workstation garbage collection should be the fastest option.
+      Either workstation or server can be used for two-processor computers.
+      Server garbage collection should be the fastest option for more than two processors.
+      
+      More details about GC you can see here: https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals-->
+    <ServerGarbageCollection>false</ServerGarbageCollection>
+    <!--In workstation or server garbage collection, you can enable concurrent garbage collection,
+      which enables threads to run concurrently with a dedicated thread that performs the garbage
+      collection for most of the duration of the collection.
+      
+      Concurrent garbage collection enables interactive applications to be more responsive by
+      minimizing pauses for a collection. Managed threads can continue to run most of the time while
+      the concurrent garbage collection thread is running. This results in shorter pauses while
+      a garbage collection is occurring.
+      
+      To improve performance when several processes are running, disable concurrent garbage collection.
+      
+      More details here: https://docs.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals#concurrent-garbage-collection-->
+    <ConcurrentGarbageCollection>false</ConcurrentGarbageCollection>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\AdminHeaderLinks\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\AdminHeaderLinks\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\BlogRssHeaderLink\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\CategoryNavigation\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\CheckoutProgress\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\CrossSellProducts\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\CurrencySelector\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\CustomerNavigation\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\EstimateShipping\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\EuCookieLaw\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\ExternalMethods\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\Favicon\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\FlyoutShoppingCart\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\Footer\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\HeaderLinks\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageBestSellers\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageCategories\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageNews\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\HomePagePolls\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageProducts\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\LanguageSelector\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\Logo\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\ManufacturerNavigation\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\NewsletterBox\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\NewsRssHeaderLink\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\OrderSummary\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\OrderTotals\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\PollBlock\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\PopularProductTags\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\PrivateMessagesInbox\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\PrivateMessagesSentItems\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\ProductsAlsoPurchased\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\RecentlyViewedProductsBlock\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\RelatedProducts\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\SearchBox\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\SelectedCheckoutAttributes\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\SocialButtons\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\StoreThemeSelector\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\TaxTypeSelector\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\TopicBlock\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\TopMenu\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\VendorNavigation\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\Components\Widget\Default.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_AddressAttributes.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_CategoryLine.Navigation.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_CategoryLine.TopMenu.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_CheckoutAttributes.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_ColumnsOne.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_ColumnsTwo.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_CreateOrUpdateAddress.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_DiscountBox.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_Header.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_JavaScriptDisabledWarning.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_Notifications.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_OldInternetExplorerWarning.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_OrderReviewData.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_Poll.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_Print.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_ProductBox.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_Root.cshtml" />
+    <_ContentIncludedByDefault Remove="Themes\BoomShopClean\Views\Shared\_Root.Head.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\BlogRssHeaderLink\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\CategoryNavigation\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\CheckoutProgress\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\CrossSellProducts\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\CurrencySelector\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\CustomerNavigation\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\EstimateShipping\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\EuCookieLaw\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\ExternalMethods\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\Favicon\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\FlyoutShoppingCart\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\Footer\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\HeaderLinks\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageBestSellers\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageCategories\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageNews\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\HomePagePolls\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\HomepageProducts\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\LanguageSelector\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\Logo\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\ManufacturerNavigation\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\NewsletterBox\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\NewsRssHeaderLink\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\OrderSummary\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\OrderTotals\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\PollBlock\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\PopularProductTags\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\PrivateMessagesInbox\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\PrivateMessagesSentItems\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\ProductsAlsoPurchased\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\RecentlyViewedProductsBlock\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\RelatedProducts\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\SearchBox\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\SelectedCheckoutAttributes\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\SocialButtons\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\StoreThemeSelector\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\TaxTypeSelector\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\TopicBlock\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\TopMenu\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\VendorNavigation\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\Components\Widget\Default.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_AddressAttributes.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_CategoryLine.Navigation.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_CategoryLine.TopMenu.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_CheckoutAttributes.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_ColumnsOne.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_ColumnsTwo.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_CreateOrUpdateAddress.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_DiscountBox.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_Header.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_JavaScriptDisabledWarning.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_Notifications.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_OldInternetExplorerWarning.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_OrderReviewData.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_Poll.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_Print.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_ProductBox.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_Root.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Themes\BoomShopClean\Views\Shared\_Root.Head.cshtml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Themes\BoomShopClean\Views\Catalog\CategoryTemplate.ProductsInGridOrLines.cshtml">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Include="wwwroot\dist\qtyButton.js" />
+    <None Include="wwwroot\images\boom shop frontpage.psd" />
+    <None Include="wwwroot\images\templates\banner_stand\banner_stands_templates.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\60x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\banner_stands_templates.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\BOUNDARY_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\CASCADE_33.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\CASCADE_33.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ELEVATE_24x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ELEVATE_31.5x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ELEVATE_48x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ELEVATE_60x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ELEVATE_DOUBLE_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ELEVATE_TRIPLE_35.375x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\EVENT_31.5x72.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_double-sided_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_double-sided_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_double-sided_48x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_interchangeable_24x74-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_interchangeable_33.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_interchangeable_36x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_interchangeable_48x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_interchangeable_60x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_standard_24x74-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_standard_31.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_standard_33.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_standard_36x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_standard_48x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_standard_60x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_XL_interchangeable_31.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_XL_interchangeable_33.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_XL_interchangeable_36x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_XL_standard_31.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_XL_standard_33.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXPERT_XL_standard_36x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXTREME_33.5x120.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_EXTREME_36x120.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_interchangeable_24x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_interchangeable_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_interchangeable_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_interchangeable_48x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_interchangeable_60x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_standard_24x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_standard_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_standard_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_standard_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_standard_48x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_standard_60x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_TABLETOP_24x44-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_TABLETOP_33.5x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_TABLETOP_36x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_TABLETOP_48x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\FRONTIER_TABLETOP_60x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\KESTREL.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\MAGNUM.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_black_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_black_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_black_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_EXPERT_31.5x54-78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_EXPERT_33.5x54-78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_EXPERT_36x54-78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_silver_22x60.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_silver_24x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_silver_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_silver_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_silver_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_silver_with_padded_bag_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_TABLETOP_22x28.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_TABLETOP_24x36.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_TABLETOP_36x48.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORIGIN_TABLETOP_Black_36x48.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORLANDO_DOUBLE_33.5x48.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stands\ORLANDO_DOUBLE_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\60x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\banner_stands_templates.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\BOUNDARY_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\CASCADE_33.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\CASCADE_33.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ELEVATE_24x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ELEVATE_31.5x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ELEVATE_48x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ELEVATE_60x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ELEVATE_DOUBLE_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ELEVATE_TRIPLE_35.375x77.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\EVENT_31.5x72.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_double-sided_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_double-sided_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_double-sided_48x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_interchangeable_24x74-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_interchangeable_33.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_interchangeable_36x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_interchangeable_48x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_interchangeable_60x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_standard_24x74-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_standard_31.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_standard_33.5x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_standard_36x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_standard_48x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_standard_60x62-86.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_XL_interchangeable_31.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_XL_interchangeable_33.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_XL_interchangeable_36x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_XL_standard_31.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_XL_standard_33.5x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXPERT_XL_standard_36x82-96.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXTREME_33.5x120.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_EXTREME_36x120.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_interchangeable_24x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_interchangeable_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_interchangeable_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_interchangeable_48x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_interchangeable_60x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_standard_24x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_standard_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_standard_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_standard_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_standard_48x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_standard_60x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_TABLETOP_24x44-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_TABLETOP_33.5x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_TABLETOP_36x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_TABLETOP_48x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\FRONTIER_TABLETOP_60x32-54.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\KESTREL.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\MAGNUM.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_black_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_black_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_black_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_EXPERT_31.5x54-78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_EXPERT_33.5x54-78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_EXPERT_36x54-78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_silver_22x60.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_silver_24x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_silver_31.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_silver_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_silver_36x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_silver_with_padded_bag_33.5x78.75.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_TABLETOP_22x28.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_TABLETOP_24x36.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_TABLETOP_36x48.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORIGIN_TABLETOP_Black_36x48.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORLANDO_DOUBLE_33.5x48.pdf" />
+    <None Include="wwwroot\images\uploaded\templates\banner_stand\ORLANDO_DOUBLE_33.5x78.75.pdf" />
+  </ItemGroup>
+
+</Project>

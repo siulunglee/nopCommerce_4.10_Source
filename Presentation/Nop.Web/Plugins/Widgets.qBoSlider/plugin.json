@@ -1,0 +1,15 @@
+﻿{
+  "Group": "Widgets",
+  "FriendlyName": "qBoSlider",
+  "SystemName": "Widgets.qBoSlider",
+  "Version": "1.02",
+  "SupportedVersions": [
+    "4.10"
+  ],
+  "Author": "Alvaar",
+  "DisplayOrder": 2,
+  "FileName": "Nop.Plugin.Widgets.qBoSlider.dll",
+  "Description": "It's simple slider extention which allow you create multi-language slides.",
+  "LimitedToStores": [],
+  "LimitedToCustomerRoles": []
+}
