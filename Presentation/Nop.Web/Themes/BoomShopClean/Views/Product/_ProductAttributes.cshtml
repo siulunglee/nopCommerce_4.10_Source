@@ -540,11 +540,25 @@
 
             // function for getting ProudctInfo and calculate the unit price for coroplast sign board
             function ajaxGetProductInfo(url) {
+
+                console.log("ajax call");
+
                 $.ajax({
                     cache: false,
                     url: url,
                     data: $('#product-details-form').serialize(),
                     type: 'post',
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        //alert('An error occurred... Look at the console (F12 or Ctrl+Shift+I, Console tab) for more information!');
+
+                        //$('#result').html('<p>status code: '+jqXHR.status+'</p><p>errorThrown: ' + errorThrown + '</p><p>jqXHR.responseText:</p><div>'+jqXHR.responseText + '</div>');
+                        console.log('jqXHR:');
+                        console.log(jqXHR);
+                        console.log('textStatus:');
+                        console.log(textStatus);
+                        console.log('errorThrown:');
+                        console.log(errorThrown);
+                    },
                     success: function (data) {
                         if (data.price) {
                             $('.price-value-@productId').text(data.price);
@@ -642,8 +656,9 @@
             }
 
             $(document).ready(function() {
+                @Html.Raw(attributeChangeScriptsBuilder.ToString());
                 @(attributeChangeHandlerFuncName)();
-                @Html.Raw(attributeChangeScriptsBuilder.ToString())
+
             });
 </script>
     }
