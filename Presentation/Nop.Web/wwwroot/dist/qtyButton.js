@@ -215,7 +215,7 @@ function calculatePrice(data, qty) {
     }
 
     console.log("================= detail pricing ====================");
-    console.log("calculatedPriceStr", calculatedPriceStr);
+    console.log("calculatedPriceStr: ", calculatedPriceStr);
 
     if (data.customSize != 'true') {
         //halfSizeCutMaxYield = parseInt((calculatedPriceStr.split(",")[0]).split(":")[1]);
@@ -384,6 +384,19 @@ function calculateWholeHalfSizeQtyNeed(qty, wholeSizeCutMaxYield) {
     console.log("halfSizeQtyNeeded: ", halfSizeQtyNeeded);
     console.log("wholeSizeQtyNeeded: ", wholeSizeQtyNeeded);
     console.log("wholeSizeBoardQTYNeeded: ", wholeSizeBoardQTYNeeded);
+
+    if(halfSizeQtyNeeded > 0 && wholeSizeBoardQTYNeeded == 0) {
+        $('#bestPriceQTY').text("(Best Price per board in QTY of:" + wholeSizeCutMaxYield + ")").show(500);
+    }
+    else if(halfSizeQtyNeeded > 0 && wholeSizeCutMaxYield >= 1) {
+        $('#bestPriceQTY').text("(Best Price per board in QTY of:" + wholeSizeCutMaxYield * wholeSizeBoardQTYNeeded 
+            + " or " + wholeSizeCutMaxYield * (wholeSizeBoardQTYNeeded + 1) + ")").show(500);
+    } 
+    else {
+       $('#bestPriceQTY').text("").hide();
+    }
+
+
     //console.log("wholeSizeCutDivisionQty: ", wholeSizeCutDivisionQty);
 
     return "halfSizeQtyNeeded:", halfSizeQtyNeeded, "wholeSizeBoardQTYNeeded:", wholeSizeBoardQTYNeeded;
